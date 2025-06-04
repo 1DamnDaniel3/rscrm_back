@@ -8,6 +8,7 @@ const router = express.Router();
 
 //CRUD
 router.post('/users/registration', authMiddleware, (req, res) => baseUserController.create(req, res));
+router.post('/users/getAllWhere', authMiddleware,  (req, res) => baseUserController.getAllWhere(req, res));
 router.get('/users', authMiddleware,  (req, res) => baseUserController.getAll(req, res));
 router.get('/users/:id', authMiddleware, (req, res) => baseUserController.getOne(req, res));
 router.put('/users/:id', authMiddleware, (req, res) => baseUserController.updateData(req, res));

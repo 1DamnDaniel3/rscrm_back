@@ -12,14 +12,6 @@ export const Source = sequelize.define('Source', {
         type: DataTypes.TEXT,
         allowNull: true
     },
-    school_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-            model: 'schools',
-            key: 'id'
-        }
-    }
 }, {
     tableName: 'sources',
     timestamps: false

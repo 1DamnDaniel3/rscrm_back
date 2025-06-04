@@ -15,7 +15,7 @@ CREATE TABLE user_accounts (
   id SERIAL PRIMARY KEY,
   email TEXT NOT NULL UNIQUE,
   password TEXT NOT NULL,
-  role TEXT CHECK (role IN ('admin', 'manager', 'teacher')),
+  role TEXT CHECK (role IN ('admin', 'manager', 'teacher', 'receptionist', 'accountant', 'owner')) DEFAULT 'owner',
   created_at TIMESTAMP DEFAULT NOW(),
   school_id UUID REFERENCES schools(id) ON DELETE CASCADE
 );
@@ -31,13 +31,13 @@ CREATE TABLE user_profiles (
 -- 3. Справочники
 CREATE TABLE sources (
   id SERIAL PRIMARY KEY,
-  name TEXT,
-  school_id UUID REFERENCES schools(id) ON DELETE CASCADE
+  name TEXT
 );
 
 CREATE TABLE statuses (
   id SERIAL PRIMARY KEY,
-  name TEXT
+  name TEXT,
+  school_id UUID REFERENCES schools(id) ON DELETE CASCADE
 );
 
 -- 4. Клиенты и лиды
@@ -61,7 +61,6 @@ CREATE TABLE clients (
   phone TEXT,
   birthdate DATE,
   contact TEXT,
-  is_parent BOOLEAN,
   created_at TIMESTAMP DEFAULT NOW(),
   school_id UUID REFERENCES schools(id) ON DELETE CASCADE
 );
@@ -119,11 +118,8 @@ CREATE TABLE subscription_pauses (
 CREATE TABLE groups (
   id SERIAL PRIMARY KEY,
   name TEXT,
-  entity_type TEXT,
+  entity_type TEXT CHECK (entity_type IN ('lead', 'student', 'client')),
   created_at TIMESTAMP DEFAULT NOW(),
-  active_from DATE,
-  active_to DATE,
-  is_archived BOOLEAN DEFAULT FALSE,
   school_id UUID REFERENCES schools(id) ON DELETE CASCADE
 );
 
@@ -269,9 +265,9 @@ CREATE TABLE teacher_rate_rules (
 ---------------------------------------------------- Индексы --------------------------------------------
 
 
--- Индексы для внешних ключей (если они не создаются автоматически)
+--- Индексы для внешних ключей (если они не создаются автоматически)
 CREATE INDEX idx_user_accounts_school_id ON user_accounts(school_id);
-CREATE INDEX idx_sources_school_id ON sources(school_id);
+CREATE INDEX idx_statuses_school_id ON statuses(school_id); 
 CREATE INDEX idx_leads_school_id ON leads(school_id);
 CREATE INDEX idx_clients_school_id ON clients(school_id);
 CREATE INDEX idx_students_school_id ON students(school_id);
@@ -329,11 +325,13 @@ CREATE INDEX idx_teacher_rates_teacher_id ON teacher_rates(teacher_id);
 CREATE INDEX idx_teacher_rates_policy_id ON teacher_rates(policy_id);
 
 -- Уникальный индекс уже есть на user_accounts.email
+
 -- Индексы по часто используемым фильтрам
 CREATE INDEX idx_leads_phone ON leads(phone);
 CREATE INDEX idx_clients_phone ON clients(phone);
 CREATE INDEX idx_students_birthdate ON students(birthdate);
 CREATE INDEX idx_lessons_start_time ON lessons(start_time);
+
 
 
 ----------------------------------------------------- ДАМП заполнения --------------------------
@@ -345,40 +343,58 @@ school_id UUID;
 BEGIN
 -- Школы танцев
 INSERT INTO schools (name, city, phone, email, created_at) VALUES
-('Танцевальная школа "Грация"', 'Москва', '+7 (495) 123-4567', 'info@gracia.ru', NOW())
+('Right Step RnD', 'Ростов-на-Дону', '89009009090', 'ownerSchool@gmail.com', NOW())
 RETURNING id INTO school_id;
 
 -- Пользователи системы
 INSERT INTO user_accounts (email, password, role, created_at, school_id) VALUES
-('admin@gracia.ru', 'hashedpassword1', 'admin', NOW(), school_id),
-('manager@gracia.ru', 'hashedpassword2', 'manager', NOW(), school_id),
-('teacher@gracia.ru', 'hashedpassword3', 'teacher', NOW(), school_id);
+('admin@gmail.com', '$2a$10$FlEeydohowlZtkt.fcN4Leit1lA2gfYcJ44hWvBH/TtDASQzqf8mK', 'admin', NOW(), null),
+('owner@gmail.com', '$2a$10$d8REo8wDZUsvfEEUtLM9oeEQ7963bF4VsyFrSsG3Wjt0xdC9DMksO', 'owner', NOW(), school_id),
+('manager@gmail.com', '$2a$10$aQ2qfd/lc.lj14q2IFPml.3RyUfD3EGWJla9R66JDpGtFC0aoFf16', 'manager', NOW(), school_id),
+('teacher@gmail.com', '$2a$10$uWLa7aKUbBiDoe0AdrUzWu.es3Z10xoMb3aJyNikn2i6T2qBzcmVm', 'teacher', NOW(), school_id),
+('accountant@gmail.com', '$2a$10$8X3grbQVWyLHvZbPbIf4ve5ZFCLUN0LGnRPVvJs7aJmIiBigtFT2q', 'accountant', NOW(), school_id),
+('receptionist@gmail.com', '$2a$10$0EdbnGzRRUpkzWGfRQRwBuFlVMwA6W4GoAb8beIBPdhCIWgklef86', 'receptionist', NOW(), school_id);
 
-INSERT INTO user_profiles (account_id, phone, full_name) VALUES
-(1, '+7 (900) 111-2233', 'Администратор Грации'),
-(2, '+7 (900) 222-3344', 'Менеджер Школы'),
-(3, '+7 (900) 333-4455', 'Иван Иванов');
+INSERT INTO user_profiles (account_id, phone, full_name, birthdate) VALUES
+(1, '+7 (900) 900-9090', 'Admin', '2025-05-24'),
+(2, '+7 (900) 901-9191', 'Owner', '2025-05-24'),
+(3, '+7 (900) 902-9292', 'Manager', '2025-05-24'),
+(4, '+7 (900) 903-9393', 'Teacher', '2025-05-24'),
+(5, '+7 (900) 904-9494', 'Accountant', '2025-05-24'),
+(6, '+7 (900) 905-9595', 'Receptionist', '2025-05-24');
 
 -- Виды продвижения
-INSERT INTO sources (name, school_id) VALUES
-('Instagram', school_id),
-('Рекомендации', school_id),
-('Реклама Google', school_id);
+INSERT INTO sources (name) VALUES
+('Instagram'),
+('Рекомендации'),
+('Реклама Google'),
+('ВКонтакте'),
+('TikTok'),
+('Сайт школы'),
+('Яндекс.Директ'),
+('Уличная реклама'),
+('Реклама в ТЦ'),
+('Реклама в лифтах'),
+('Флаеры'),
+('Открытые уроки'),
+('Пробные занятия'),
+('Мероприятия и фестивали'),
+('Сарафанное радио');
 
 -- Статусы лидов
-INSERT INTO statuses (name) VALUES
-('Новый'),
-('В обработке'),
-('Записан на пробное'),
-('Клиент');
+INSERT INTO statuses (name, school_id) VALUES
+('Новый', school_id),
+('В обработке', school_id),
+('Записан на пробное', school_id),
+('Клиент', school_id);
 
 -- Лиды
 INSERT INTO leads (name, phone, source_id, status_id, trial_date, qualification, created_by, created_at, converted_to_client_at, school_id) VALUES
 ('Петрова Анна', '+7 (999) 555-1122', 1, 3, '2025-05-20', 'горячий', 2, NOW(), NULL, school_id);
 
 -- Клиенты
-INSERT INTO clients (name, phone, birthdate, contact, is_parent, created_at, school_id) VALUES
-('Петрова Анна', '+7 (999) 555-1122', '1990-03-15', 'мама ученицы', true, NOW(), school_id);
+INSERT INTO clients (name, phone, birthdate, contact, created_at, school_id) VALUES
+('Петрова Анна', '+7 (999) 555-1122', '1990-03-15', 'мама ученицы', NOW(), school_id);
 
 -- Ученики
 INSERT INTO students (name, birthdate, created_at, school_id) VALUES
@@ -402,8 +418,8 @@ INSERT INTO subscription_pauses (student_subscription_id, paused_from, paused_to
 (1, '2025-05-10', '2025-05-15', school_id);
 
 -- Группы
-INSERT INTO groups (name, entity_type, created_at, active_from, active_to, is_archived, school_id) VALUES
-('Группа для новичков', 'student', NOW(), '2025-01-01', '2025-12-31', false, school_id);
+INSERT INTO groups (name, entity_type, created_at, school_id) VALUES
+('Группа для новичков', 'student', NOW(), school_id);
 
 -- Участие в группах
 INSERT INTO student_groups (student_id, group_id, school_id) VALUES

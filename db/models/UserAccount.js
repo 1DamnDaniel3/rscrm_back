@@ -28,7 +28,7 @@ export const UserAccount = sequelize.define('UserAccount', {
         }
     },
     role: {
-        type: DataTypes.ENUM('admin', 'manager', 'teacher'),
+        type: DataTypes.ENUM('admin', 'manager', 'teacher', 'receptionist', 'accountant', 'owner'),
         allowNull: false
     },
     created_at: {

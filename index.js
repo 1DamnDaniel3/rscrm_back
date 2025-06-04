@@ -7,7 +7,9 @@ dotenv.config();
 
 
 import {
-  authRouter, userRouter
+  authRouter, userRouter, profileRouter,
+  schoolRouter, leadsRouter, sourcesRouter,
+  statusesRouter, groupsRouter, 
 } from './routes/index.js';
 
 const PORT = process.env.PORT || 3001;
@@ -27,6 +29,12 @@ app.use(cookieParser());
 
 app.use('/api/auth', authRouter);
 app.use('/api', userRouter);
+app.use('/api', profileRouter);
+app.use('/api', schoolRouter);
+app.use('/api', leadsRouter);
+app.use('/api', sourcesRouter);
+app.use('/api', statusesRouter);
+app.use('/api', groupsRouter);
 
 
 

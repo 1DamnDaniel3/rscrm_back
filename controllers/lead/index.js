@@ -1,0 +1,1 @@
+export {BaseLeadController, baseLeadController} from './BaseLeadController.js'

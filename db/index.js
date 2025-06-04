@@ -12,11 +12,10 @@ import {
 School.hasMany(UserAccount, { foreignKey: 'school_id', onDelete: 'CASCADE' });
 UserAccount.belongsTo(School, { foreignKey: 'school_id', onDelete: 'CASCADE' });
 
-School.hasMany(Source, { foreignKey: 'school_id', onDelete: 'CASCADE' });
-Source.belongsTo(School, { foreignKey: 'school_id', onDelete: 'CASCADE' });
-
 School.hasMany(Status, { foreignKey: 'school_id', onDelete: 'CASCADE' });
 Status.belongsTo(School, { foreignKey: 'school_id', onDelete: 'CASCADE' });
+
+
 
 School.hasMany(Lead, { foreignKey: 'school_id', onDelete: 'CASCADE' });
 Lead.belongsTo(School, { foreignKey: 'school_id', onDelete: 'CASCADE' });
@@ -108,8 +107,8 @@ Source.hasMany(Lead, { foreignKey: 'source_id', onDelete: 'SET NULL' });
 Lead.belongsTo(Source, { foreignKey: 'source_id', onDelete: 'SET NULL' });
 
 // --- Status ---
-Status.hasMany(Lead, { foreignKey: 'status_id', onDelete: 'NO ACTION' }); // В дампе нет ON DELETE, оставим по умолчанию
-Lead.belongsTo(Status, { foreignKey: 'status_id', onDelete: 'NO ACTION' });
+Status.hasMany(Lead, { foreignKey: 'status_id', onDelete: 'SET NULL' }); 
+Lead.belongsTo(Status, { foreignKey: 'status_id', onDelete: 'SET NULL' });
 
 // --- Many-to-Many через промежуточные таблицы ---
 
@@ -191,12 +190,11 @@ TeacherRatePolicy.hasMany(TeacherRate, { foreignKey: 'policy_id', onDelete: 'CAS
 TeacherRate.belongsTo(TeacherRatePolicy, { foreignKey: 'policy_id', onDelete: 'CASCADE' });
 
 // --- TeacherRate & TeacherRateRule ---
-TeacherRate.hasMany(TeacherRateRule, { foreignKey: 'policy_id', onDelete: 'CASCADE' });
+TeacherRatePolicy.hasMany(TeacherRateRule, { foreignKey: 'policy_id', onDelete: 'CASCADE' });
 TeacherRateRule.belongsTo(TeacherRatePolicy, { foreignKey: 'policy_id', onDelete: 'CASCADE' });
 
-// --- TeacherRate & UserAccount (teacher) ---
-UserAccount.hasMany(TeacherRate, { foreignKey: 'teacher_id', onDelete: 'CASCADE' });
-TeacherRate.belongsTo(UserAccount, { foreignKey: 'teacher_id', onDelete: 'CASCADE' });
+
+
 
 export {
     sequelize,

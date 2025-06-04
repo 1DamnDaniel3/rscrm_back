@@ -20,18 +20,6 @@ export const Group = sequelize.define('Group', {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW
     },
-    active_from: {
-        type: DataTypes.DATEONLY,
-        allowNull: true
-    },
-    active_to: {
-        type: DataTypes.DATEONLY,
-        allowNull: true
-    },
-    is_archived: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false
-    },
     school_id: {
         type: DataTypes.INTEGER,
         allowNull: true,

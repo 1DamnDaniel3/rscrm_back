@@ -97,7 +97,7 @@ export class RegisterService {
             }, { transaction });
 
             // создаём админа и связываем со школой
-            userData.account.role = 'admin';
+            userData.account.role = 'owner';
             userData.account.school_id = newSchool.id;
 
             const { newAccount, newProfile } = await this.registerUser(userData, transaction);
