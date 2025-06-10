@@ -107,7 +107,7 @@ Source.hasMany(Lead, { foreignKey: 'source_id', onDelete: 'SET NULL' });
 Lead.belongsTo(Source, { foreignKey: 'source_id', onDelete: 'SET NULL' });
 
 // --- Status ---
-Status.hasMany(Lead, { foreignKey: 'status_id', onDelete: 'SET NULL' }); 
+Status.hasMany(Lead, { foreignKey: 'status_id', onDelete: 'SET NULL' });
 Lead.belongsTo(Status, { foreignKey: 'status_id', onDelete: 'SET NULL' });
 
 // --- Many-to-Many через промежуточные таблицы ---
@@ -128,12 +128,9 @@ Group.belongsToMany(Student, { through: StudentGroup, foreignKey: 'group_id', ot
 Student.belongsToMany(Client, { through: StudentClient, foreignKey: 'student_id', otherKey: 'client_id', onDelete: 'CASCADE' });
 Client.belongsToMany(Student, { through: StudentClient, foreignKey: 'client_id', otherKey: 'student_id', onDelete: 'CASCADE' });
 
-// --- Subscription & StudentSubscription ---
-Subscription.hasMany(StudentSubscription, { foreignKey: 'subscription_id', onDelete: 'CASCADE' });
-StudentSubscription.belongsTo(Subscription, { foreignKey: 'subscription_id', onDelete: 'CASCADE' });
-
-Student.hasMany(StudentSubscription, { foreignKey: 'student_id', onDelete: 'CASCADE' });
-StudentSubscription.belongsTo(Student, { foreignKey: 'student_id', onDelete: 'CASCADE' });
+// Student <-> Subscription через StudentSubscription
+Student.belongsToMany(Subscription, { through: StudentSubscription, foreignKey: 'student_id', onDelete: 'CASCADE' });
+Subscription.belongsToMany(Student, { through: StudentSubscription, foreignKey: 'subscription_id', onDelete: 'CASCADE' });
 
 // --- StudentSubscription & SubscriptionPause ---
 StudentSubscription.hasMany(SubscriptionPause, { foreignKey: 'student_subscription_id', onDelete: 'CASCADE' });

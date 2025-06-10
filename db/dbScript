@@ -33,10 +33,11 @@ CREATE TABLE sources (
   id SERIAL PRIMARY KEY,
   name TEXT
 );
-
+-- статусы (для lead - по воронке продаж, для student - для потеряшек)
 CREATE TABLE statuses (
   id SERIAL PRIMARY KEY,
   name TEXT,
+  type TEXT,
   school_id UUID REFERENCES schools(id) ON DELETE CASCADE
 );
 
@@ -70,6 +71,8 @@ CREATE TABLE students (
   id SERIAL PRIMARY KEY,
   name TEXT,
   birthdate DATE,
+  skill_level VARCHAR(8) CHECK (skill_level IN ('beginner', 'middle', 'pro')), -- новый столбец
+  contact TEXT, -- новый столбец
   created_at TIMESTAMP DEFAULT NOW(),
   school_id UUID REFERENCES schools(id) ON DELETE CASCADE
 );
@@ -382,11 +385,13 @@ INSERT INTO sources (name) VALUES
 ('Сарафанное радио');
 
 -- Статусы лидов
-INSERT INTO statuses (name, school_id) VALUES
-('Новый', school_id),
-('В обработке', school_id),
-('Записан на пробное', school_id),
-('Клиент', school_id);
+INSERT INTO statuses (name, type, school_id) VALUES
+('Новый', 'lead', school_id),
+('В обработке', 'lead', school_id),
+('Записан на пробное', 'lead', school_id),
+('Клиент', 'lead', school_id)
+('Активный', 'student', school_id),
+('Архивный', 'student', school_id);
 
 -- Лиды
 INSERT INTO leads (name, phone, source_id, status_id, trial_date, qualification, created_by, created_at, converted_to_client_at, school_id) VALUES
@@ -394,15 +399,17 @@ INSERT INTO leads (name, phone, source_id, status_id, trial_date, qualification,
 
 -- Клиенты
 INSERT INTO clients (name, phone, birthdate, contact, created_at, school_id) VALUES
+('Петров Андрей', '+7 (999) 555-3344', '1990-12-15', 'папа ученицы', NOW(), school_id),
 ('Петрова Анна', '+7 (999) 555-1122', '1990-03-15', 'мама ученицы', NOW(), school_id);
 
 -- Ученики
-INSERT INTO students (name, birthdate, created_at, school_id) VALUES
-('Петрова Мария', '2015-06-10', NOW(), school_id);
+INSERT INTO students (name, birthdate, skill_level, contact, created_at, school_id) VALUES
+('Петрова Мария', '2015-06-10', 'beginner', '@petrova' NOW(), school_id);
 
 -- Связь учеников и клиентов
-INSERT INTO student_clients (student_id, client_id, relation, school_id) VALUES
-(1, 1, 'мама', school_id);
+INSERT INTO student_clients (student_id, client_id, is_payer, relation, school_id) VALUES
+(1, 1, true, 'папа', school_id);
+(1, 2, false, 'мама', school_id);
 
 -- Абонементы
 INSERT INTO subscriptions (name, price, visit_limit, active_from, active_to, is_archived, school_id) VALUES

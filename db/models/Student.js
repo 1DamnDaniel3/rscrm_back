@@ -16,6 +16,20 @@ export const Student = sequelize.define('Student', {
         type: DataTypes.DATEONLY,
         allowNull: true
     },
+    skill_level: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+        constraints: {
+            check: {
+                args: ["skill_level IN ('beginner', 'middle', 'pro')"],
+                msg: 'Допустимые значения для skill_level: "beginner", "middle", "pro"'
+            }
+        }
+    },
+    contact: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
     created_at: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW

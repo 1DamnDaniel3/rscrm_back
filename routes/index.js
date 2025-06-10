@@ -6,4 +6,5 @@ export {router as leadsRouter} from './lead.routes.js'
 export {router as sourcesRouter} from './source.routes.js'
 export {router as statusesRouter} from './status.routes.js'
 export {router as groupsRouter} from './group.routes.js'
+export {router as studentsRouter} from './student.routes.js'
 

@@ -9,7 +9,7 @@ dotenv.config();
 import {
   authRouter, userRouter, profileRouter,
   schoolRouter, leadsRouter, sourcesRouter,
-  statusesRouter, groupsRouter, 
+  statusesRouter, groupsRouter, studentsRouter,
 } from './routes/index.js';
 
 const PORT = process.env.PORT || 3001;
@@ -35,6 +35,7 @@ app.use('/api', leadsRouter);
 app.use('/api', sourcesRouter);
 app.use('/api', statusesRouter);
 app.use('/api', groupsRouter);
+app.use('/api', studentsRouter);
 
 
 

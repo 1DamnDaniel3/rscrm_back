@@ -46,11 +46,13 @@ export class BaseController {
 
             // 1. Фильтруем только разрешенные поля основной модели
             const modelFields = Object.keys(this.model.rawAttributes);
+
             for (const key of Object.keys(req.body)) {
                 if (modelFields.includes(key)) {
                     whereClause[key] = req.body[key];
                 }
             }
+
 
             // 2. Настраиваем связи БЕЗ условий
             const safeIncludes = (this.defaultIncludes || []).map(include => ({
@@ -66,7 +68,6 @@ export class BaseController {
                 subQuery: false,
                 attributes: this.attributes || undefined
             });
-
             res.json(items);
         } catch (error) {
             // Обработка ошибок
@@ -123,7 +124,7 @@ export class BaseController {
             if (!deletedItem) {
                 return res.status(404).json({ message: 'Item not found' });
             }
-            res.json({ message: 'Item deleted',  id: item_id});
+            res.json({ message: 'Item deleted', id: item_id });
         } catch (error) {
             res.status(500).json({ message: error.message });
         }

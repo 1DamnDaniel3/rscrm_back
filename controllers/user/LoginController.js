@@ -37,7 +37,7 @@ export class LoginController {
             );
             res.cookie('token', token, {
                 httpOnly: true,
-                maxAge: 3600000,
+                maxAge: 18000000,
                 secure: process.env.NODE_ENV === 'production'
             });
 

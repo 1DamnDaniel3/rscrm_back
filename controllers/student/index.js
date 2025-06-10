@@ -1,0 +1,1 @@
+export { BaseStudentController, baseStudentController } from './BaseStudentController.js'

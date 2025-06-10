@@ -8,6 +8,8 @@ export { BaseLeadController, baseLeadController } from './lead/index.js'
 export { BaseSourceController, baseSourceController } from './source/index.js'
 export { BaseStatusController, baseStatusController } from './status/index.js'
 export { BaseGroupController, baseGroupController } from './group/index.js'
+export { BaseStudentController, baseStudentController } from './student/index.js'
+
 
 
 

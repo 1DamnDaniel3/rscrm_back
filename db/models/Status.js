@@ -12,6 +12,10 @@ export const Status = sequelize.define('Status', {
         type: DataTypes.TEXT,
         allowNull: true
     },
+    type: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
     school_id: {
         type: DataTypes.INTEGER,
         allowNull: true,

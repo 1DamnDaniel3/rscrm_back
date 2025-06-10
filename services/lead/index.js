@@ -1,0 +1,1 @@
+export { LeadRegService, leadRegService } from './LeadRegService.js'

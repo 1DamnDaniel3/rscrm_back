@@ -24,10 +24,6 @@ export const Client = sequelize.define('Client', {
         type: DataTypes.TEXT,
         allowNull: true
     },
-    is_parent: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true
-    },
     created_at: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW
