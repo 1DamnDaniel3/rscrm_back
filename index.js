@@ -10,6 +10,7 @@ import {
   authRouter, userRouter, profileRouter,
   schoolRouter, leadsRouter, sourcesRouter,
   statusesRouter, groupsRouter, studentsRouter,
+  clientsRouter, lessonsRouter, schedulesRouter
 } from './routes/index.js';
 
 const PORT = process.env.PORT || 3001;
@@ -36,6 +37,9 @@ app.use('/api', sourcesRouter);
 app.use('/api', statusesRouter);
 app.use('/api', groupsRouter);
 app.use('/api', studentsRouter);
+app.use('/api', clientsRouter);
+app.use('/api', lessonsRouter);
+app.use('/api', schedulesRouter);
 
 
 

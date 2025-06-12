@@ -144,7 +144,7 @@ CREATE TABLE student_groups (
   id SERIAL PRIMARY KEY,
   student_id INTEGER REFERENCES students(id) ON DELETE CASCADE,
   group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE,
-  school_id UUID REFERENCES schools(id) ON DELETE CASCADE
+  school_id UUID REFERENCES schools(id) ON DELETE CASCADE,
 );
 
 -- 8. Направления танцев

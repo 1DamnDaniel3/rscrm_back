@@ -1,0 +1,1 @@
+export {ClientRegService, clientRegService} from './ClientRegService.js' 

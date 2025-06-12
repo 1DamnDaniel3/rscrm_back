@@ -7,4 +7,7 @@ export {router as sourcesRouter} from './source.routes.js'
 export {router as statusesRouter} from './status.routes.js'
 export {router as groupsRouter} from './group.routes.js'
 export {router as studentsRouter} from './student.routes.js'
+export {router as clientsRouter} from './client.routes.js'
+export {router as lessonsRouter} from './client.routes.js'
+export {router as schedulesRouter} from './schedule.routes.js'
 
