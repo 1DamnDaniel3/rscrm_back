@@ -1,7 +1,7 @@
 import express from 'express'
 
 import { authMiddleware } from '../middleware/authMiddleware.js';
-import { baseUserController } from '../controllers/index.js'
+import { baseUserController, profileController } from '../controllers/index.js'
 import { loginController } from '../controllers/index.js'
 
 const router = express.Router();
@@ -20,5 +20,8 @@ router.post('/users/registration/school', (req, res) => baseUserController.creat
 
 router.post('/users/login', (req, res) => loginController.userLogin(req, res));// login
 router.post('/users/logout', (req, res) => loginController.userLogout(req, res));// logout
+router.post('/users/getUserProfilesWhere', (req, res) => profileController.getAllWhere(req, res));// getUserProfiles
+router.post('/users/getWithRole', (req, res) => baseUserController.getUserInfo(req, res)); // get users with school_id and role
+
 
 export { router };

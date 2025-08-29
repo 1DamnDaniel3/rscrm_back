@@ -140,6 +140,14 @@ SubscriptionPause.belongsTo(StudentSubscription, { foreignKey: 'student_subscrip
 Group.hasMany(Schedule, { foreignKey: 'group_id', onDelete: 'CASCADE' });
 Schedule.belongsTo(Group, { foreignKey: 'group_id', onDelete: 'CASCADE' });
 
+// --- DanceStyle & Schedule ---
+DanceStyle.hasMany(Schedule, { foreignKey: 'direction_id', onDelete: 'SET NULL' });
+Schedule.belongsTo(DanceStyle, { foreignKey: 'direction_id', onDelete: 'SET NULL' });
+
+// --- UserAccount (Teacher) & Schedule ---
+UserAccount.hasMany(Schedule, { foreignKey: 'teacher_id', onDelete: 'SET NULL' });
+Schedule.belongsTo(UserAccount, { foreignKey: 'teacher_id', onDelete: 'SET NULL' });
+
 // --- Group & Lesson ---
 Group.hasMany(Lesson, { foreignKey: 'group_id', onDelete: 'CASCADE' });
 Lesson.belongsTo(Group, { foreignKey: 'group_id', onDelete: 'CASCADE' });

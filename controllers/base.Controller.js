@@ -33,7 +33,7 @@ export class BaseController {
             res.json(items);
         } catch (error) {
             res.status(500).json({
-                message: error.message,
+                error: error.message,
                 // Добавляем детали ошибки для отладки
                 details: error.errors?.map(err => err.message)
             });
@@ -70,7 +70,7 @@ export class BaseController {
             });
             res.json(items);
         } catch (error) {
-            // Обработка ошибок
+            res.status(500).json({message: "Internal Server Error", error: error.message}); 
         }
     }
 

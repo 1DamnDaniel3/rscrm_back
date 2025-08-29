@@ -1,15 +1,11 @@
 import { BaseController } from "../base.Controller.js";
-import { DanceStyle, Group, Lesson, UserAccount, UserProfile } from "../../db/index.js";
+import { DanceStyle } from "../../db/index.js";
 
-export class BaseLessonController extends BaseController {
+export class BaseStylesController extends BaseController {
     constructor() {
-        super(Lesson, {
+        super(DanceStyle, {
             modelIdName: 'id',
-            includes: [
-                { model: Group, attributes: ['entity_type', 'name'] },
-                { model: DanceStyle, attributes: ["name"] },
-                { model: UserAccount, include: [{ model: UserProfile }], attributes: ['role'] }
-            ]
+
 
         })
     }
@@ -27,5 +23,5 @@ export class BaseLessonController extends BaseController {
     // }
 }
 
-export const baseLessonController = new BaseLessonController;
+export const baseStylesController = new BaseStylesController;
 

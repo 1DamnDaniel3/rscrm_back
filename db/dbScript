@@ -144,7 +144,7 @@ CREATE TABLE student_groups (
   id SERIAL PRIMARY KEY,
   student_id INTEGER REFERENCES students(id) ON DELETE CASCADE,
   group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE,
-  school_id UUID REFERENCES schools(id) ON DELETE CASCADE,
+  school_id UUID REFERENCES schools(id) ON DELETE CASCADE
 );
 
 -- 8. Направления танцев
@@ -161,6 +161,8 @@ CREATE TABLE dance_styles (
 CREATE TABLE schedules (
   id SERIAL PRIMARY KEY,
   group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE,
+  direction_id INTEGER REFERENCES dance_styles(id) ON DELETE SET NULL,
+  teacher_id INTEGER REFERENCES user_accounts(id) ON DELETE SET NULL,
   weekday INTEGER,
   start_time TIME,
   duration_minutes INTEGER,
@@ -175,10 +177,13 @@ CREATE TABLE lessons (
   group_id INTEGER REFERENCES groups(id) ON DELETE CASCADE,
   direction_id INTEGER REFERENCES dance_styles(id) ON DELETE SET NULL,
   teacher_id INTEGER REFERENCES user_accounts(id) ON DELETE SET NULL,
-  start_time TIMESTAMP,
+  lesson_date DATE,
+  start_time TIME,
   duration_minutes INTEGER,
   is_canceled BOOLEAN DEFAULT FALSE,
-  school_id UUID REFERENCES schools(id) ON DELETE CASCADE
+  school_id UUID REFERENCES schools(id) ON DELETE CASCADE,
+  UNIQUE(school_id, lesson_date, start_time, group_id)
+
 );
 
 -- 11. Посещаемость
@@ -338,8 +343,6 @@ CREATE INDEX idx_lessons_start_time ON lessons(start_time);
 
 
 ----------------------------------------------------- ДАМП заполнения --------------------------
-
-
 DO $$
 DECLARE 
 school_id UUID;
@@ -389,7 +392,7 @@ INSERT INTO statuses (name, type, school_id) VALUES
 ('Новый', 'lead', school_id),
 ('В обработке', 'lead', school_id),
 ('Записан на пробное', 'lead', school_id),
-('Клиент', 'lead', school_id)
+('Клиент', 'lead', school_id),
 ('Активный', 'student', school_id),
 ('Архивный', 'student', school_id);
 
@@ -404,11 +407,11 @@ INSERT INTO clients (name, phone, birthdate, contact, created_at, school_id) VAL
 
 -- Ученики
 INSERT INTO students (name, birthdate, skill_level, contact, created_at, school_id) VALUES
-('Петрова Мария', '2015-06-10', 'beginner', '@petrova' NOW(), school_id);
+('Петрова Мария', '2015-06-10', 'beginner', '@petrova', NOW(), school_id);
 
 -- Связь учеников и клиентов
 INSERT INTO student_clients (student_id, client_id, is_payer, relation, school_id) VALUES
-(1, 1, true, 'папа', school_id);
+(1, 1, true, 'папа', school_id),
 (1, 2, false, 'мама', school_id);
 
 -- Абонементы

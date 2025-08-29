@@ -16,6 +16,22 @@ export const Schedule = sequelize.define('Schedule', {
             key: 'id'
         }
     },
+    direction_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'dance_styles',
+            key: 'id'
+        }
+    },
+    teacher_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'user_accounts',
+            key: 'id'
+        }
+    },
     weekday: {
         type: DataTypes.INTEGER,
         allowNull: false

@@ -1,0 +1,1 @@
+export { BaseAttendanceController, baseAttendanceController } from './BaseAttendanceController.js'

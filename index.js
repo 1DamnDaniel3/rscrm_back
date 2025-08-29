@@ -10,15 +10,17 @@ import {
   authRouter, userRouter, profileRouter,
   schoolRouter, leadsRouter, sourcesRouter,
   statusesRouter, groupsRouter, studentsRouter,
-  clientsRouter, lessonsRouter, schedulesRouter
+  clientsRouter, lessonsRouter, schedulesRouter, attendancesRouter,
+  stylesRouter
 } from './routes/index.js';
 
 const PORT = process.env.PORT || 3001;
 
 const app = express();
 
+
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'http://localhost',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
@@ -40,6 +42,8 @@ app.use('/api', studentsRouter);
 app.use('/api', clientsRouter);
 app.use('/api', lessonsRouter);
 app.use('/api', schedulesRouter);
+app.use('/api', attendancesRouter);
+app.use('/api', stylesRouter);
 
 
 

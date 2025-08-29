@@ -1,7 +1,7 @@
 import express from 'express'
 
 import { authMiddleware } from '../middleware/authMiddleware.js';
-import { baseLessonController } from '../controllers/index.js'
+import { baseLessonController, generateLessonsController } from '../controllers/index.js'
 
 const router = express.Router();
 
@@ -14,6 +14,7 @@ router.put('/lessons/:id', authMiddleware, (req, res) => baseLessonController.up
 router.delete('/lessons/:id', authMiddleware, (req, res) => baseLessonController.delete(req, res));
 
 //ANOTHER ROUTES
+router.post('/lessons/generate', authMiddleware, (req, res) => generateLessonsController.generateLessons(req, res));
 
 
 export { router };

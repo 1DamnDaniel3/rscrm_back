@@ -32,8 +32,12 @@ export const Lesson = sequelize.define('Lesson', {
             key: 'id'
         }
     },
-    start_time: {
+    lesson_date: {
         type: DataTypes.DATE,
+        allowNull: true
+    },
+    start_time: {
+        type: DataTypes.TIME,
         allowNull: true
     },
     duration_minutes: {
